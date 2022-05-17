@@ -1,6 +1,6 @@
 ﻿namespace ServerDocFabricator.DAL.Entities
 {
-    public class DocumentTemplateEntity : Entity
+    public class TempalteEntity : Entity
     {
         public Guid CreatedUserId { get; set; }
         public string TemplateName { get; set; }

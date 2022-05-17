@@ -1,9 +1,9 @@
 ﻿
 using ServerDocFabricator.BL.DocumentEditors;
 using ServerDocFabricator.DAL.Models.Fields;
-using ServerDocFabricator.Utils.Attributes;
 using Syncfusion.DocIO;
 using Syncfusion.DocIO.DLS;
+using ServerDocFabricator.BL.Utils.Attributes;
 
 namespace ServerDocFabricator.BL.DocumentsEditors
 {

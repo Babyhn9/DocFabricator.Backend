@@ -1,14 +1,10 @@
-﻿using Microsoft.Extensions.Options;
-using ServerDocFabricator.BL.DocumentEditors;
+﻿using ServerDocFabricator.BL.DocumentEditors;
 using ServerDocFabricator.BL.Interfaces;
+using ServerDocFabricator.BL.Utils.Attributes;
 using ServerDocFabricator.DAL;
 using ServerDocFabricator.DAL.Entities;
 using ServerDocFabricator.DAL.Models;
 using ServerDocFabricator.DAL.Models.BL;
-using ServerDocFabricator.Utils;
-using ServerDocFabricator.Utils.Attributes;
-using Syncfusion.DocIO;
-using Syncfusion.DocIO.DLS;
 
 namespace ServerDocFabricator.BL.Realizations
 {
@@ -17,14 +13,14 @@ namespace ServerDocFabricator.BL.Realizations
     {
         public Guid UserId { get; set; }
 
-        private readonly IRepository<DocumentTemplateEntity> _templates;
+        private readonly IRepository<TempalteEntity> _templates;
         private readonly IRepository<TemplateFieldEntity> _fields;
         private readonly IRepository<DocumentEntity> _documents;
         private readonly IDocumentEditor _documentEditor;
 
 
         public DocumentBl(
-            IRepository<DocumentTemplateEntity> templates,
+            IRepository<TempalteEntity> templates,
             IRepository<TemplateFieldEntity> fields,
             IRepository<DocumentEntity> documents,
             IDocumentEditor documentEditor
@@ -37,9 +33,9 @@ namespace ServerDocFabricator.BL.Realizations
         }
 
         public List<DocumentEntity> GetDocuments() => _documents.FindAll(el => el.CreatedUserId == UserId);
-        public List<TemplateFieldEntity> GetFields(DocumentTemplateEntity document) => _fields.FindAll(el => el.TemplateID == document.Id).ToList();
-        public List<DocumentTemplateEntity> GetTemplates() => _templates.FindAll(el => el.CreatedUserId == UserId).ToList();
-        public DocumentTemplateEntity CreateTemplate(NewDocumentTemplateInfo info)
+        public List<TemplateFieldEntity> GetFields(TempalteEntity document) => _fields.FindAll(el => el.TemplateID == document.Id).ToList();
+        public List<TempalteEntity> GetTemplates() => _templates.FindAll(el => el.CreatedUserId == UserId).ToList();
+        public TempalteEntity CreateTemplate(NewDocumentTemplateInfo info)
         {
             try
             {
@@ -52,7 +48,7 @@ namespace ServerDocFabricator.BL.Realizations
                 var pathToFile = _documentEditor.SaveToDisk();
 
                 var createdTemplate = _templates
-                   .Add(new DocumentTemplateEntity
+                   .Add(new TempalteEntity
                    {
                        CreatedUserId = UserId,
                        PathToFile = pathToFile,
@@ -67,8 +63,8 @@ namespace ServerDocFabricator.BL.Realizations
                     _fields.Add(new TemplateFieldEntity
                      {
                          TemplateID = createdTemplate.Id,
-                         ToRename = templateField.To,
-                         Label = fieldInfo.Label,
+                         RenameValue = templateField.To,
+                         FieldName = fieldInfo.FieldValue,
                          Description = fieldInfo.Description
                      });
                 }
@@ -78,7 +74,7 @@ namespace ServerDocFabricator.BL.Realizations
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return new DocumentTemplateEntity();
+                return new TempalteEntity();
             }
         }
 
@@ -91,7 +87,7 @@ namespace ServerDocFabricator.BL.Realizations
             foreach(var field in fields)
             {
                 var fieldEntity = _fields.Find(field.FieldId);
-                _documentEditor.SetFieldValue(fieldEntity.ToRename, field.Value);
+                _documentEditor.SetFieldValue(fieldEntity.RenameValue, field.Value);
             }
 
             return _documentEditor.GetModifiedFile().File;

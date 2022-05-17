@@ -2,10 +2,8 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ServerDocFabricator.BL.Interfaces;
+using ServerDocFabricator.BL.Utils.Attributes;
 using ServerDocFabricator.DAL.Entities;
-using ServerDocFabricator.Utils;
-using ServerDocFabricator.Utils.Attributes;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

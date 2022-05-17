@@ -1,5 +1,5 @@
 ﻿using ServerDocFabricator.BL.Interfaces;
-using ServerDocFabricator.Utils.Attributes;
+using ServerDocFabricator.BL.Utils.Attributes;
 
 namespace ServerDocFabricator.BL.Realizations
 {

@@ -1,7 +1,7 @@
 ﻿using ServerDocFabricator.BL.Interfaces;
+using ServerDocFabricator.BL.Utils.Attributes;
 using ServerDocFabricator.DAL;
 using ServerDocFabricator.DAL.Entities;
-using ServerDocFabricator.Utils.Attributes;
 
 namespace ServerDocFabricator.BL.Realizations
 {

@@ -1,4 +1,5 @@
-﻿using ServerDocFabricator.Utils.Attributes;
+﻿using ServerDocFabricator.BL.Utils.Attributes;
+using ServerDocFabricator.Utils.Attributes;
 using System.Reflection;
 
 namespace ServerDocFabricator.Utils

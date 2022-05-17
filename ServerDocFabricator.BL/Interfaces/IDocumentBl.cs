@@ -7,9 +7,9 @@ namespace ServerDocFabricator.BL.Interfaces
 {
     public interface IDocumentBl : IBindable
     {
-        DocumentTemplateEntity CreateTemplate(NewDocumentTemplateInfo info);
+        TempalteEntity CreateTemplate(NewDocumentTemplateInfo info);
         Stream CreateDocument(DocumentCreationInfo info);
-        List<DocumentTemplateEntity> GetTemplates();
+        List<TempalteEntity> GetTemplates();
         BuildTemplateModel GetTemplate(Guid guid);
         /// <summary>
         /// return created users documents
@@ -23,7 +23,7 @@ namespace ServerDocFabricator.BL.Interfaces
         /// <returns></returns>
         DocumentModel GetDocument(Guid documentId);
         
-        List<TemplateFieldEntity> GetFields(DocumentTemplateEntity document);
+        List<TemplateFieldEntity> GetFields(TempalteEntity document);
 
     }
 }

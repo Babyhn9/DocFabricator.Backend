@@ -9,7 +9,7 @@ namespace ColoredLive.DAL
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<DocumentEntity> Documents { get; set; }
         public DbSet<TemplateFieldEntity> Fields { get; set; }
-        public DbSet<DocumentTemplateEntity> Templates { get; set; }
+        public DbSet<TempalteEntity> Templates { get; set; }
         public DbSet<TemplateReplaceSpaceEntity> Replaces { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

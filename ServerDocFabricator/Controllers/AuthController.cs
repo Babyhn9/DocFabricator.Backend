@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServerDocFabricator.BL.Interfaces;
-using ServerDocFabricator.DAL.Entities;
+using ServerDocFabricator.BL.Services.Interfaces;
 using ServerDocFabricator.DAL.Models.Requests;
-using ServerDocFabricator.DAL.Models.Responces;
+using ServerDocFabricator.Server.Responces;
 using ServerDocFabricator.Utils;
-using ServerDocFabricator.Utils.Attributes;
 
 namespace ServerDocFabricator.Controllers
 {
@@ -23,10 +21,10 @@ namespace ServerDocFabricator.Controllers
         [HttpPost("signin")]
         public ActionResult<AuthorizationResponce> Auth(LoginRequest request)
         {
-            var user = _authBl.Authorize(request.Email, request.Password);
-            if (!user.IsEmpty)
-                return Ok(new AuthorizationResponce { Token = _tokenBl.Generate(user) });
-            
+            var id = _authBl.Authorize(request.Email, request.Password);
+            if (id != Guid.Empty)
+                return Ok(new AuthorizationResponce { Token = _tokenBl.Generate(id) });
+
             return BadRequest();
         }
 
@@ -37,16 +35,16 @@ namespace ServerDocFabricator.Controllers
                 return BadRequest();
 
             var result = _authBl
-                .Register(new UserEntity { Email = request.Email, Password = request.Password });
+                .Register(request.Email, request.Password);
 
             return Ok(new AuthorizationResponce { Token = _tokenBl.Generate(result) });
         }
 
-        [HttpGet("me")]
-        [JwtAuth]
-        public ActionResult Me()
-        {
-            return Ok($"{Identity.Id}:{Identity.Email}:{Identity.Password}");
-        }
+        //[HttpGet("me")]
+        //[JwtAuth]
+        //public ActionResult Me()
+        //{
+        //    return Ok($"{Identity.Id}:{Identity.Email}:{Identity.Password}");
+        //}
     }
 }

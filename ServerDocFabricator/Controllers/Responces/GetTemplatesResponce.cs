@@ -1,9 +1,8 @@
-﻿using ServerDocFabricator.DAL.Entities;
-
-namespace ServerDocFabricator.DAL.Models.Responces
+﻿
+namespace ServerDocFabricator.Server.Responces
 {
     public class GetTemplatesResponce
     {
-        public List<TemplateModel> Templates { get; set; }
+       //public List<TemplateModel> Templates { get; set; }
     }
 }

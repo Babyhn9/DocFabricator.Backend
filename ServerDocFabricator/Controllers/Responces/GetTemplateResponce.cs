@@ -1,7 +1,10 @@
-﻿namespace ServerDocFabricator.DAL.Models.Responces
+﻿using ServerDocFabricator.BL.Models;
+
+namespace ServerDocFabricator.Server.Responces
 {
     public class GetTemplateResponce
     {
-        public BuildTemplateModel Template { get; set; }
+        public TemplateModel Template { get; set; }
+        public string FlatText { get; set; }
     }
 }

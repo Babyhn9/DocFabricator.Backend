@@ -1,7 +1,9 @@
-﻿namespace ServerDocFabricator.DAL.Models.Responces
+﻿
+namespace ServerDocFabricator.Server.Controllers.Responces
 {
     public class CreateTemplateResponce
     {
-        public string TemplateId { get; set; }
+        public Guid TemplateId { get; set; }
+        public string TemplateName { get; set; }
     }
 }

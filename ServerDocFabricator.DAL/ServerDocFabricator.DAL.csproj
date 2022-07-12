@@ -12,4 +12,8 @@
     <PackageReference Include="Syncfusion.XlsIO.Net.Core" Version="20.1.0.56" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\RefEntities\" />
+  </ItemGroup>
+
 </Project>

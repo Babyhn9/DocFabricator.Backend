@@ -1,6 +1,5 @@
 ﻿
 using ServerDocFabricator.BL.DocumentEditors;
-using ServerDocFabricator.DAL.Models.Fields;
 using Syncfusion.DocIO;
 using Syncfusion.DocIO.DLS;
 using ServerDocFabricator.BL.Utils.Attributes;
@@ -10,9 +9,8 @@ namespace ServerDocFabricator.BL.DocumentsEditors
     [Buisness]
     public class DockIoWordEditor : IDocumentEditor
     {
-        private List<NewFieldModel> _fields;
+        private List<NewDocumentFieldModel> _fields;
         private WordDocument _document;
-
         public DockIoWordEditor()
         {
 
@@ -21,8 +19,9 @@ namespace ServerDocFabricator.BL.DocumentsEditors
         public void AttachFile(Stream document)
         {
             _document?.Close();
-            _fields = new List<NewFieldModel>();
+            _fields = new List<NewDocumentFieldModel>();
             _document = new WordDocument(document, FormatType.Docx);
+            
         }
 
         public string CreateField(string value, int skipCount)
@@ -30,7 +29,7 @@ namespace ServerDocFabricator.BL.DocumentsEditors
             if (_document == null) throw GetException();
 
             var replacement = CreateReplacement();
-            _fields.Add(new NewFieldModel { From = value, To = replacement, SkipCount = skipCount });
+            _fields.Add(new NewDocumentFieldModel { From = value, To = replacement, SkipCount = skipCount });
             var entries = _document.FindAll(value, false, true);
            
             if(skipCount < entries.Length)
@@ -62,8 +61,39 @@ namespace ServerDocFabricator.BL.DocumentsEditors
             return file.Name;
         }
 
+        public string SaveToDisk(string filePath)
+        {
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
+
+            using var file = File.OpenWrite(filePath);
+            _document.Save(file, FormatType.Docx);
+            return file.Name;
+        }
+
+        /// <summary>
+        /// позволяет сохранить данные по тому же пути.
+        /// </summary>
+        /// <param name="filePath"></param>
+        public void Save(string filePath)
+        {
+            using var memo = new MemoryStream();
+            _document.Save(memo, FormatType.Docx);
+            _document.Close();
+            using var fs = File.Create(filePath);
+
+            memo.Position = 0;
+            memo.WriteTo(fs);
+        }
         public void SetFieldValue(string fieldId, string fieldValue) => _document.Find(fieldId, false, true).GetAsOneRange().Text = fieldValue;
         
+        public string GetText()
+        {
+            var text = _document.GetText();
+            _document.Close();
+            return text;
+        } 
         private ArgumentException GetException() => throw new InvalidOperationException("Перед использованием, необходимо присоединить файл");
 
         private string CreateFileName(string postFix = "") =>

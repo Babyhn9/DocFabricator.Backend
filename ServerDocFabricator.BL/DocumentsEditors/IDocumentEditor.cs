@@ -1,5 +1,4 @@
-﻿using ServerDocFabricator.DAL.Models;
-using ServerDocFabricator.DAL.Models.Fields;
+﻿using ServerDocFabricator.BL.DocumentsEditors;
 
 namespace ServerDocFabricator.BL.DocumentEditors
 {
@@ -26,11 +25,16 @@ namespace ServerDocFabricator.BL.DocumentEditors
         /// </summary>
         /// <returns></returns>
         DocumentEditorSaveModel GetModifiedFile();
+        /// <summary>
+        /// Возвращает текст и закрывает документ
+        /// </summary>
+        /// <returns></returns>
+        string GetText();
     }
 
     public class DocumentEditorSaveModel
     {
         public Stream File { get; set; }
-        public List<NewFieldModel> Fields { get; set; }
+        public List<NewDocumentFieldModel> Fields { get; set; }
     }
 }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DocX" Version="2.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
@@ -16,6 +17,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ServerDocFabricator.BL\ServerDocFabricator.BL.csproj" />
     <ProjectReference Include="..\ServerDocFabricator.DAL\ServerDocFabricator.DAL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="templates\" />
   </ItemGroup>
 
 </Project>

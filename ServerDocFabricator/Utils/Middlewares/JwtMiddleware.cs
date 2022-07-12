@@ -35,7 +35,7 @@ namespace ColoredLive.Service.Core.Middlewares
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_settings.SecretKey);
+                var key = Encoding.ASCII.GetBytes("ultrasekettarkowkey");
                 
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {

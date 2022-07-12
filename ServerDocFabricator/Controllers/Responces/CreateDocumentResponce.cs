@@ -1,4 +1,4 @@
-﻿namespace ServerDocFabricator.DAL.Models.Responces
+﻿namespace ServerDocFabricator.Server.Responces
 {
     public class CreateDocumentResponce
     {

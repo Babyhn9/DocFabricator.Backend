@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace ServerDocFabricator.BL.Models
 {
-    public class TemplateModel
+    public class CreateTemplateFieldModel
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
-        public List<TemplateFieldModel> Fields { get; set; }
-        public TemplateSettingsModel Settings { get; set; }
+        public string Description { get; set; }
+        public string Value { get; set; }
+        public int SkipCount { get; set; }
     }
-
 }
+

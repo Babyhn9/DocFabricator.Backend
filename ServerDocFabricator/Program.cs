@@ -3,11 +3,12 @@ using ColoredLive.DAL;
 using ServerDocFabricator.DAL.Entities;
 using ServerDocFabricator.Utils;
 using ColoredLive.Service.Core.Middlewares;
+using ServerDocFabricator.BL.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-var section = builder.Configuration.GetSection("AppSettings");
+var section = builder.Configuration.GetSection("root:settings");
 builder.Services.Configure<AppSettings>(section);
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -17,7 +18,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 //    Title = "Test API",
 //    Description = "Best doc fabricator api Description",
 //}));
-BlAutoImplementor.Implement<UserEntity>(builder.Services);
+BlAutoImplementor.Implement<ITemplateBl>(builder.Services);
+BlAutoImplementor.ImplementMapper<ITemplateBl>(builder.Services);
 
 builder.Services.AddControllers();
 

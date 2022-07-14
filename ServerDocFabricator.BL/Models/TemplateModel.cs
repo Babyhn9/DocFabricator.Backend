@@ -10,6 +10,7 @@ namespace ServerDocFabricator.BL.Models
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string? Description { get; set; }
         public List<TemplateFieldModel> Fields { get; set; }
         public TemplateSettingsModel Settings { get; set; }
     }

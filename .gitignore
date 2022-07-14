@@ -363,4 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 *.db
+base.db-*
 /ServerDocFabricator/templates/
+bin/

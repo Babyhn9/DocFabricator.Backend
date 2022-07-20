@@ -49,28 +49,10 @@ namespace ServerDocFabricator.Server.Controllers
             }
             );
             return Ok(new CreateTemplateResponce { TemplateId = template.Id, TemplateName = template.Name });
-
-            //var stringifyFields = request.Fields; 
-            //var fields = new List<NewTemplateFieldModel>();
-            //foreach (var field in stringifyFields)
-            //{
-            //    var deserialized = JsonSerializer.Deserialize<NewTemplateFieldModel>(field);
-            //    if (deserialized != null)
-            //        fields.Add(deserialized);
-            //    else return BadRequest("Произошла ошибка при создании шаблона");
-
-            //}
-
-            //var result = _documentBl.CreateTemplate(new NewDocumentTemplateInfo(request.Name,
-            //    request.File.OpenReadStream(),
-            //     fields));
-
-            //return Ok(new CreateTemplateResponce { TemplateId = result.Id.ToString() });
-            //  return Ok(result.Id);
-            return Ok();
         }
-        [HttpPost("init")]
-        public ActionResult InitTemplate(InitTemplateRequest request)
+
+        [HttpPost("fields/add")]
+        public ActionResult InitTemplate(AddFieldsRequest request)
         {
             _templateBl.InitTemplate(request.TemplateId, request.Fields);
             return Ok();

@@ -361,7 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
+base.db
 *.db
 base.db-*
 /ServerDocFabricator/templates/

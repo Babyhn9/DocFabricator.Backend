@@ -1,5 +1,5 @@
 ﻿
-namespace ServerDocFabricator.Server.Responses
+namespace ServerDocFabricator.Server.Controllers.Responses
 {
     public class GetTemplatesResponce
     {

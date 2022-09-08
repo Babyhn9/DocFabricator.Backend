@@ -1,6 +1,6 @@
-﻿namespace ServerDocFabricator.Server.Responses
+﻿namespace ServerDocFabricator.Server.Controllers.Responses
 {
-    public class AuthorizationResponce
+    public class AuthorizationResponse
     {
         public string Token { get; set; }
     }

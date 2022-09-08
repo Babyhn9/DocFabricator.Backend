@@ -1,9 +1,9 @@
-﻿using ServerDocFabricator.BL.Models;
+﻿using ServerDocFabricator.BL.DTO;
 
 namespace ServerDocFabricator.Server.Controllers.Responses
 {
     public class GetAllTemplatesResponse
     {
-        public List<DisplayTemplateDTO> Templates { get; set;}
+        public List<DisplayTemplateDto> Templates { get; set;}
     }
 }

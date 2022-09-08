@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServerDocFabricator.BL.Models
+﻿namespace ServerDocFabricator.BL.DTO
 {
-    public class TemplateFieldDTO
+    public class TemplateFieldDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

@@ -1,12 +1,12 @@
 ﻿namespace ServerDocFabricator.BL.DTO
 {
-    public class CreateTemplateFieldDTO
+    public class CreateTemplateFieldDto
     {
         
         /// <summary>
         /// Имя поля
         /// </summary>
-        public string Name { get; set; }
+        public string FieldName { get; set; }
         
         /// <summary>
         /// Описание поля

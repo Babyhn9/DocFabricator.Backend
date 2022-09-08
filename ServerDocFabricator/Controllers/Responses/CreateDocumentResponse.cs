@@ -1,6 +1,6 @@
-﻿namespace ServerDocFabricator.Server.Responses
+﻿namespace ServerDocFabricator.Server.Controllers.Responses
 {
-    public class CreateDocumentResponce
+    public class CreateDocumentResponse
     {
         public string BytesOfDocument { get; set; }
     }

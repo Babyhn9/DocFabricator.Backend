@@ -1,4 +1,4 @@
-﻿using ServerDocFabricator.BL.Models;
+﻿using ServerDocFabricator.BL.DTO;
 using ServerDocFabricator.BL.Services.Interfaces;
 using ServerDocFabricator.DAL;
 using ServerDocFabricator.DAL.Entities;
@@ -16,7 +16,7 @@ namespace ServerDocFabricator.BL.Services.Realizations
             _templates = templates;
         }
 
-        public void AddField(Guid templateId, CreateTemplateFieldModel info)
+        public void AddField(Guid templateId, CreateTemplateFieldDto info)
         {
             var template = _templates.Find(templateId);
             if(!template.IsEmpty)
@@ -24,7 +24,7 @@ namespace ServerDocFabricator.BL.Services.Realizations
                 _fields.Add(new TemplateFieldEntity
                 {
                     TemplateID = templateId,
-                    FieldName = info.Name,
+                    FieldName = info.FieldName,
                     Description = info.Description,
                 });
             }

@@ -1,6 +1,8 @@
-﻿namespace ServerDocFabricator.BL.Models;
+﻿namespace ServerDocFabricator.BL.DTO;
 
-public class DisplayTemplateDTO
+public class DisplayTemplateDto
 {
-    
+    public Guid Id { get; set; }
+    public string TemplateName { get; set; }
+    public string? Description { get; set; }
 }

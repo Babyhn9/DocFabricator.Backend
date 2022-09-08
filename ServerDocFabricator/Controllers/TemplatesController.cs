@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ServerDocFabricator.BL.Models;
+using ServerDocFabricator.BL.DTO;
 using ServerDocFabricator.BL.Services.Interfaces;
 using ServerDocFabricator.Server.Controllers.Requests;
-using ServerDocFabricator.Server.Controllers.Responces;
-using ServerDocFabricator.Server.Responces;
+using ServerDocFabricator.Server.Controllers.Responses;
 using ServerDocFabricator.Utils;
 using ServerDocFabricator.Utils.Attributes;
 using Syncfusion.DocIO;
@@ -32,29 +31,34 @@ namespace ServerDocFabricator.Server.Controllers
 
 
         [HttpGet("all")]
-        public ActionResult<GetAllTemplatesResponce> GetAllTemplates()
+        public ActionResult<GetAllTemplatesResponse> GetAllTemplates()
         {
             var result = _templateBl.GetUserTemplates(Identity.Id);
-            return Ok(new GetAllTemplatesResponce { Templates = result });
+            return Ok(new GetAllTemplatesResponse { Templates = result });
         }
 
         [HttpPost("create")]
-        public ActionResult<CreateTemplateResponce> CreateTemplate([FromForm] CreateTemplateRequest request)
+        public ActionResult<DisplayTemplateDto> CreateTemplate([FromForm] CreateTemplateRequest request)
         {
-            var template = _templateBl.CreateTemplate(new CreateTemplateModel
+            var memo = new MemoryStream();
+            var stream = request.File.OpenReadStream();
+            stream.CopyTo(memo);
+            stream.Close();
+            
+            var createdTemplate = _templateBl.CreateTemplate(new CreateTemplateDto
             {
                 UserId = Identity.Id,
-                File = request.File.OpenReadStream(),
+                File = memo,
                 TemplateName = request.Name
-            }
-            );
-            return Ok(new CreateTemplateResponce { TemplateId = template.Id, TemplateName = template.Name });
+            });
+            
+            return Ok(createdTemplate);
         }
 
         [HttpPost("fields/add")]
-        public ActionResult InitTemplate(AddFieldsRequest request)
+        public ActionResult AddFieldsToTemplate(AddFieldsRequest request)
         {
-            _templateBl.InitTemplate(request.TemplateId, request.Fields);
+            _templateBl.AddFields(request.TemplateId, request.Fields);
             return Ok();
         }
 

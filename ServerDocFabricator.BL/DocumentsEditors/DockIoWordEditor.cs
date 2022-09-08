@@ -11,16 +11,17 @@ namespace ServerDocFabricator.BL.DocumentsEditors
     {
         private List<NewDocumentFieldModel> _fields;
         private WordDocument _document;
-        public DockIoWordEditor()
-        {
-
-        }
+        
         public void AttachFile(string pathToFile) => AttachFile(File.OpenRead(pathToFile));
         public void AttachFile(Stream document)
         {
             _document?.Close();
             _fields = new List<NewDocumentFieldModel>();
-            _document = new WordDocument(document, FormatType.Docx);
+           
+            using var memo = new MemoryStream();
+            document.CopyTo(memo);
+           
+            _document = new WordDocument(memo, FormatType.Docx);
             
         }
 
@@ -49,16 +50,23 @@ namespace ServerDocFabricator.BL.DocumentsEditors
         
         public string SaveToDisk()
         {
-            var path = "templates";
+            var templatesFolder = "templates";
+            var templateFolderPath = Path.Combine(Directory.GetCurrentDirectory(), templatesFolder);
+            
             var fileName = CreateFileName(".docx");
-            path = Path.Combine(path, fileName);
+            var path = Path.Combine(Directory.GetCurrentDirectory(), templatesFolder, fileName);
+            
+            if (!Directory.Exists(templateFolderPath))
+                Directory.CreateDirectory(templateFolderPath);
             
             if (File.Exists(path))
                 File.Delete(path);
-            
+
             using var file = File.OpenWrite(path);
             _document.Save(file, FormatType.Docx);
+            
             return file.Name;
+            
         }
 
         public string SaveToDisk(string filePath)

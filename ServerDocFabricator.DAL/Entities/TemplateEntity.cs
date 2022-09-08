@@ -6,5 +6,7 @@
         public string TemplateName { get; set; }
         public string? Description { get; set; }
         public string PathToFile { get; set; }
+        
+        public List<TemplateFieldEntity> Fields { get; set; }
     }
 }

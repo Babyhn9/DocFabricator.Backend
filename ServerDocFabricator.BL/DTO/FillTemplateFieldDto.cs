@@ -1,6 +1,6 @@
 ﻿namespace ServerDocFabricator.BL.DTO
 {
-    public class FillTemplateFieldDTO
+    public class FillTemplateFieldDto
     {
         public Guid TemplateFieldId { get; set; }
         public string Value { get; set; }

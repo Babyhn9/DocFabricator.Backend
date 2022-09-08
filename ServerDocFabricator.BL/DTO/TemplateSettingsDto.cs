@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServerDocFabricator.BL.Models
+﻿namespace ServerDocFabricator.BL.DTO
 {
-    public class TemplateSettingsDTO
+    public class TemplateSettingsDto
     {
         public bool HasList { get; set; }
     }

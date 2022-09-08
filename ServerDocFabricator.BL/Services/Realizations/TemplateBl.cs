@@ -1,39 +1,39 @@
-﻿using ServerDocFabricator.BL.DocumentsEditors;
-using ServerDocFabricator.BL.Mappers;
-using ServerDocFabricator.BL.Models;
-using ServerDocFabricator.BL.Services.Interfaces;
-using ServerDocFabricator.BL.Utils.Attributes;
-using ServerDocFabricator.DAL;
-using ServerDocFabricator.DAL.Entities;
-using System.Linq;
+﻿
+using ServerDocFabricator.BL.DTO;
 
-namespace ServerDocFabricator.BL
-{
+namespace ServerDocFabricator.BL.Services.Realizations;
+    using AutoMapper;
+    
+    using ServerDocFabricator.BL.DocumentsEditors;
+    using ServerDocFabricator.BL.Services.Interfaces;
+    using ServerDocFabricator.BL.Utils.Attributes;
+    using ServerDocFabricator.DAL;
+    using ServerDocFabricator.DAL.Entities;
+
+    
+    ///<inheritdoc/>
     [Buisness]
     public class TemplateBl : ITemplateBl
     {
         private readonly IRepository<TemplateEntity> _templates;
         private readonly IRepository<TemplateFieldEntity> _templateFields;
-        private readonly IModelMapper<TemplateEntity, TemplateModel> _templateMapper;
-        private readonly IModelMapper<TemplateFieldEntity, TemplateFieldModel> _fieldMapper;
+        private readonly IMapper _mapper;
 
         public TemplateBl(
             IRepository<TemplateEntity> templates,
             IRepository<TemplateFieldEntity> templateFields,
-            IModelMapper<TemplateEntity, TemplateModel> templateMapper,
-            IModelMapper<TemplateFieldEntity, TemplateFieldModel> fieldMapper
+            IMapper mapper
             )
         {
             _templates = templates;
             _templateFields = templateFields;
-            _templateMapper = templateMapper;
-            _fieldMapper = fieldMapper;
+            _mapper = mapper;
         }
-        public TemplateModel CreateTemplate(CreateTemplateModel info)
+        public DisplayTemplateDto CreateTemplate(CreateTemplateDto info)
         {
             var documentEditor = new DockIoWordEditor();
             documentEditor.AttachFile(info.File);
-            var pathToFile = documentEditor.SaveToDisk(); ;
+            var pathToFile = documentEditor.SaveToDisk();
 
             var template = _templates.Add(new TemplateEntity
             {
@@ -42,7 +42,7 @@ namespace ServerDocFabricator.BL
                 PathToFile = pathToFile,
             });
 
-            return _templateMapper.Map(template);
+            return _mapper.Map<DisplayTemplateDto>(template);
         }
 
         public string GetFlatText(Guid templateId)
@@ -59,58 +59,54 @@ namespace ServerDocFabricator.BL
             return "";
         }
 
-        public TemplateModel GetTemplate(Guid templateId) =>
-            _templateMapper.Map(_templates.Find(templateId));
+        public TemplateDto GetTemplate(Guid templateId)
+        {
+            var result = _templates.Find(templateId);
+
+            if (result != null || result.Id != Guid.Empty)
+                return _mapper.Map<TemplateDto>(result);
+
+            return new();
+        }
 
         public Stream GetTemplateFile(Guid templateId)
         {
             var template = _templates.Find(templateId);
+            
             if (!template.IsEmpty)
                 return File.OpenRead(template.PathToFile);
 
             return null;
         }
 
-        public List<TemplateModel> GetUserTemplates(Guid userId)
-        {
-            var resultList = new List<TemplateModel>();
-            var userTemplates = _templates
-                    .FindAll(el => el.CreatedUserId == userId)
-                    .ToList();
+        public List<DisplayTemplateDto> GetUserTemplates(Guid userId) =>
+                    _templates
+                        .FindAll(el => el.CreatedUserId == userId)
+                        .Select(el => _mapper.Map<DisplayTemplateDto>(el))
+                        .ToList();
 
-            foreach (var template in userTemplates)
-                resultList.Add(_templateMapper.Map(template));
-
-            return resultList;
-        }
-
-        public void InitTemplate(Guid templateId, List<CreateTemplateFieldModel> fields)
+        public void AddFields(Guid templateId, List<CreateTemplateFieldDto> fields)
         {
             var template = _templates.Find(templateId);
-            var templateFields = _templateFields.FindAll(el => el.TemplateID == templateId);
-
+            
             if (template.IsEmpty) throw new Exception("Template now found");
-            if (templateFields.Count != 0) throw new Exception("Template inited yet");
 
             var docEditor = new DockIoWordEditor();
             docEditor.AttachFile(template.PathToFile);
 
-
             foreach (var field in fields)
             {
-                var fieldReplaceValue = docEditor.CreateField(field.Value, field.SkipCount);
+                var fieldReplaceValue = docEditor.CreateField(field.ReplaceableValue, field.SkipCount);
                 
                 _templateFields.Add(new TemplateFieldEntity
                 {
-                    RenameValue = fieldReplaceValue,
+                    ReplaceableValue = fieldReplaceValue,
                     Description = field.Description,
-                    FieldName = field.Name,
+                    FieldName = field.FieldName,
                     TemplateID = template.Id,
                 });
             }
-
-
+    
             docEditor.Save(template.PathToFile);
         }
     }
-}

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServerDocFabricator.BL.Services.Interfaces;
 using ServerDocFabricator.DAL.Models.Requests;
-using ServerDocFabricator.Server.Responces;
+using ServerDocFabricator.Server.Controllers.Responses;
 using ServerDocFabricator.Utils;
 
 namespace ServerDocFabricator.Controllers
@@ -19,17 +19,17 @@ namespace ServerDocFabricator.Controllers
         }
 
         [HttpPost("signin")]
-        public ActionResult<AuthorizationResponce> Auth(LoginRequest request)
+        public ActionResult<AuthorizationResponse> Auth(LoginRequest request)
         {
             var id = _authBl.Authorize(request.Email, request.Password);
             if (id != Guid.Empty)
-                return Ok(new AuthorizationResponce { Token = _tokenBl.Generate(id) });
+                return Ok(new AuthorizationResponse { Token = _tokenBl.Generate(id) });
 
             return BadRequest();
         }
 
         [HttpPost("signup")]
-        public ActionResult<AuthorizationResponce> Register(RegisterRequest request)
+        public ActionResult<AuthorizationResponse> Register(RegisterRequest request)
         {
             if (_authBl.IsRegistered(request.Email))
                 return BadRequest();
@@ -37,7 +37,7 @@ namespace ServerDocFabricator.Controllers
             var result = _authBl
                 .Register(request.Email, request.Password);
 
-            return Ok(new AuthorizationResponce { Token = _tokenBl.Generate(result) });
+            return Ok(new AuthorizationResponse { Token = _tokenBl.Generate(result) });
         }
 
         //[HttpGet("me")]

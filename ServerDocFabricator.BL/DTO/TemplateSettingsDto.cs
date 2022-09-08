@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServerDocFabricator.BL.Models
 {
-    public class TemplateSettingsModel
+    public class TemplateSettingsDTO
     {
         public bool HasList { get; set; }
     }

@@ -1,7 +1,7 @@
 ﻿
-namespace ServerDocFabricator.BL.Models
+namespace ServerDocFabricator.BL.DTO
 {
-    public class CreateTemplateModel
+    public class CreateTemplateDto
     {
         public Guid UserId { get; set; }
         public string TemplateName { get; set; }

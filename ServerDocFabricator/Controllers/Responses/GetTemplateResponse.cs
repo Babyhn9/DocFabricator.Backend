@@ -1,10 +1,10 @@
 ﻿using ServerDocFabricator.BL.Models;
 
-namespace ServerDocFabricator.Server.Responces
+namespace ServerDocFabricator.Server.Responses
 {
     public class GetTemplateResponce
     {
-        public TemplateModel Template { get; set; }
+        public TemplateDTO Template { get; set; }
         public string FlatText { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ServerDocFabricator.Utils;
 using ServerDocFabricator.Utils.Attributes;
 
-namespace ServerDocFabricator.Controllers
+namespace ServerDocFabricator.Server.Controllers
 {
     [JwtAuth]
     public class DocumentsController : ProjectControllerBase

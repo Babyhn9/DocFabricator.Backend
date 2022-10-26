@@ -4,7 +4,7 @@ using ServerDocFabricator.DAL.Models.Requests;
 using ServerDocFabricator.Server.Controllers.Responses;
 using ServerDocFabricator.Utils;
 
-namespace ServerDocFabricator.Controllers
+namespace ServerDocFabricator.Server.Controllers
 {
     [Route("[controller]")]
     public class AuthController : ProjectControllerBase

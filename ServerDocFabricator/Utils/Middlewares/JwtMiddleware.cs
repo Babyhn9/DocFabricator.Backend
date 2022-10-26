@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ColoredLive.DAL;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ServerDocFabricator.DAL;
@@ -20,17 +21,17 @@ namespace ColoredLive.Service.Core.Middlewares
             _settings = settings.Value;
         }
 
-        public async Task Invoke(HttpContext context, IRepository<UserEntity> users)
+        public async Task Invoke(HttpContext context, AppDbContext appContext)
         {
             var token = context.Request.Headers["token"].FirstOrDefault()?.Split(" ").Last();
             
             if (token != null)
-                AttachUserToContext(context, users, token);
+                AttachUserToContext(context, appContext, token);
 
             await _next(context);
         }
 
-        private void AttachUserToContext(HttpContext context, IRepository<UserEntity> users, string token)
+        private void AttachUserToContext(HttpContext context, AppDbContext appContext, string token)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace ColoredLive.Service.Core.Middlewares
 
                 var jwt = (JwtSecurityToken)validatedToken;
                 var userId = Guid.Parse(jwt.Claims.First(x => x.Type == "id").Value);
-                context.Items["User"] = users.Find(userId);
+                context.Items["User"] = appContext.Users.Find(userId);
             }
             catch
             {

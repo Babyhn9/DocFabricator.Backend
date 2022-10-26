@@ -1,12 +1,11 @@
 ﻿
 
 using ServerDocFabricator.BL.DTO;
-using ServerDocFabricator.DAL;
-
-namespace ServerDocFabricator.BL.Mapper;
-
 using AutoMapper;
 using ServerDocFabricator.DAL.Entities;
+namespace ServerDocFabricator.BL.Mapper;
+
+
 
 public class ProjectProfile : Profile
 {

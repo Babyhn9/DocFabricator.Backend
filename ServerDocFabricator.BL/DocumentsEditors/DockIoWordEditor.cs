@@ -6,7 +6,6 @@ using ServerDocFabricator.BL.Utils.Attributes;
 
 namespace ServerDocFabricator.BL.DocumentsEditors
 {
-    [Buisness]
     public class DockIoWordEditor : IDocumentEditor
     {
         private List<NewDocumentFieldModel> _fields;
@@ -22,7 +21,6 @@ namespace ServerDocFabricator.BL.DocumentsEditors
             document.CopyTo(memo);
            
             _document = new WordDocument(memo, FormatType.Docx);
-            
         }
 
         public string CreateField(string value, int skipCount)
@@ -48,7 +46,7 @@ namespace ServerDocFabricator.BL.DocumentsEditors
             return new DocumentEditorSaveModel { File = memory, Fields = _fields };
         }
         
-        public string SaveToDisk()
+        public string Save()
         {
             var templatesFolder = "templates";
             var templateFolderPath = Path.Combine(Directory.GetCurrentDirectory(), templatesFolder);
@@ -66,7 +64,6 @@ namespace ServerDocFabricator.BL.DocumentsEditors
             _document.Save(file, FormatType.Docx);
             
             return file.Name;
-            
         }
 
         public string SaveToDisk(string filePath)

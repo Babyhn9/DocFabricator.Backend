@@ -12,8 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var section = builder.Configuration.GetSection("root:settings");
 builder.Services.Configure<AppSettings>(section);
+builder.Services.Configure<RouteSettings>(builder.Configuration.GetSection(RouteSettings.Section));
 builder.Services.AddDbContext<AppDbContext>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 //builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo{ 
 //    Version = "v1",
@@ -21,6 +21,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 //    Description = "Best doc fabricator api Description",
 //}));
 BlAutoImplementor.Implement<ITemplateBl>(builder.Services);
+BlAutoImplementor.Implement<Program>(builder.Services);
 BlAutoImplementor.ImplementMapper<ITemplateBl>(builder.Services);
 
 builder.Services.AddSingleton(

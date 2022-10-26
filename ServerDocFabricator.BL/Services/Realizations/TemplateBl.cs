@@ -1,4 +1,6 @@
 ﻿
+using ColoredLive.DAL;
+using ServerDocFabricator.BL.DocumentEditors;
 using ServerDocFabricator.BL.DTO;
 
 namespace ServerDocFabricator.BL.Services.Realizations;
@@ -15,98 +17,64 @@ namespace ServerDocFabricator.BL.Services.Realizations;
     [Buisness]
     public class TemplateBl : ITemplateBl
     {
-        private readonly IRepository<TemplateEntity> _templates;
-        private readonly IRepository<TemplateFieldEntity> _templateFields;
+        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IDocumentEditor _documentEditor;
+        private readonly IPathBuilder _pathBuilder;
 
         public TemplateBl(
-            IRepository<TemplateEntity> templates,
-            IRepository<TemplateFieldEntity> templateFields,
-            IMapper mapper
+            AppDbContext context,
+            IMapper mapper,
+            IDocumentEditor documentEditor,
+            IPathBuilder pathBuilder
             )
         {
-            _templates = templates;
-            _templateFields = templateFields;
+            _context = context;
             _mapper = mapper;
+            _documentEditor = documentEditor;
+            _pathBuilder = pathBuilder;
         }
-        public DisplayTemplateDto CreateTemplate(CreateTemplateDto info)
+        public TemplateEntity CreateTemplate(CreateTemplateDto info)
         {
-            var documentEditor = new DockIoWordEditor();
-            documentEditor.AttachFile(info.File);
-            var pathToFile = documentEditor.SaveToDisk();
+            var fileName = _pathBuilder.CreateFileName();
 
-            var template = _templates.Add(new TemplateEntity
+            var template = _context.Templates.Add(new()
             {
                 CreatedUserId = info.UserId,
                 TemplateName = info.TemplateName,
-                PathToFile = pathToFile,
-            });
-
-            return _mapper.Map<DisplayTemplateDto>(template);
+                Description = info.Description,
+                FileName = fileName,
+            }).Entity;
+            
+            _documentEditor.OpenTemplate(template);
+            _documentEditor.Save();
+            
+            return template;
         }
 
-        public string GetFlatText(Guid templateId)
+        public TemplateEntity GetTemplate(Guid templateId)
         {
-            var template = _templates.Find(templateId);
-
-            if (!template.IsEmpty)
-            {
-                var doc = new DockIoWordEditor();
-                doc.AttachFile(template.PathToFile);
-                return doc.GetText();
-            }
-
-            return "";
-        }
-
-        public TemplateDto GetTemplate(Guid templateId)
-        {
-            var result = _templates.Find(templateId);
-
-            if (result != null || result.Id != Guid.Empty)
-                return _mapper.Map<TemplateDto>(result);
-
-            return new();
+            throw new NotImplementedException();
         }
 
         public Stream GetTemplateFile(Guid templateId)
         {
-            var template = _templates.Find(templateId);
-            
-            if (!template.IsEmpty)
-                return File.OpenRead(template.PathToFile);
-
-            return null;
+            throw new NotImplementedException();
         }
 
-        public List<DisplayTemplateDto> GetUserTemplates(Guid userId) =>
-                    _templates
-                        .FindAll(el => el.CreatedUserId == userId)
-                        .Select(el => _mapper.Map<DisplayTemplateDto>(el))
-                        .ToList();
-
-        public void AddFields(Guid templateId, List<CreateTemplateFieldDto> fields)
+        public List<DisplayTemplateDto> GetUserTemplates(UserEntity user)
         {
-            var template = _templates.Find(templateId);
-            
-            if (template.IsEmpty) throw new Exception("Template now found");
+            throw new NotImplementedException();
+        }
 
-            var docEditor = new DockIoWordEditor();
-            docEditor.AttachFile(template.PathToFile);
+        public string GetFlatText(TemplateEntity templateEntity)
+        {
+            throw new NotImplementedException();
+        }
 
-            foreach (var field in fields)
-            {
-                var fieldReplaceValue = docEditor.CreateField(field.ReplaceableValue, field.SkipCount);
-                
-                _templateFields.Add(new TemplateFieldEntity
-                {
-                    ReplaceableValue = fieldReplaceValue,
-                    Description = field.Description,
-                    FieldName = field.FieldName,
-                    TemplateID = template.Id,
-                });
-            }
-    
-            docEditor.Save(template.PathToFile);
+        public void AddFields(TemplateEntity templateEntity, List<CreateTemplateFieldDto> fields)
+        {
+            throw new NotImplementedException();
         }
     }
+

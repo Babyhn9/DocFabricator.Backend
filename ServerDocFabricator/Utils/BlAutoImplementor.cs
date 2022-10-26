@@ -41,6 +41,8 @@ namespace ServerDocFabricator.Utils
                 {
                     serviceProvider.AddScoped(@interface, blType);
                 }
+
+                serviceProvider.AddScoped(blType);
             }
         }
     }

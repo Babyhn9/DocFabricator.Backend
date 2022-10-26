@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ServerDocFabricator.BL.DTO;
+using ServerDocFabricator.DAL.Entities;
 
 namespace ServerDocFabricator.BL.Services.Interfaces
 
@@ -15,42 +16,35 @@ namespace ServerDocFabricator.BL.Services.Interfaces
         /// </summary>
         /// <param name="info">Информация о новом шаблоне</param>
         /// <returns>Модель шаблона</returns>
-        DisplayTemplateDto CreateTemplate(CreateTemplateDto info);
+        TemplateEntity CreateTemplate(CreateTemplateDto info);
         
         /// <summary>
         /// Возвращает шаблон по id
         /// </summary>
         /// <param name="templateId">id шаблона</param>
         /// <returns>Модель шаблона</returns>
-        TemplateDto GetTemplate(Guid templateId);
-        
-        /// <summary>
-        /// Возвращает файл шаблона по id
-        /// </summary>
-        /// <param name="templateId">id - шаблона</param>
-        /// <returns>Стрим Файла</returns>
-        Stream GetTemplateFile(Guid templateId);
+        TemplateEntity GetTemplate(Guid templateId);
         
         /// <summary>
         /// 
         /// </summary>
         /// <param name="userId">id пользователя</param>
         /// <returns>Список шаблонов, созданных пользователем</returns>
-        List<DisplayTemplateDto> GetUserTemplates(Guid userId);
+        List<DisplayTemplateDto> GetUserTemplates(UserEntity user);
         
         /// <summary>
         /// Возвращает текст шаблона без форматирования
         /// </summary>
         /// <param name="templateId">id шаблона</param>
         /// <returns></returns>
-        string GetFlatText(Guid templateId);
+        string GetFlatText(TemplateEntity template);
 
         /// <summary>
         /// Добавляет шаблону новые поля
         /// </summary>
-        /// <param name="templateId">id - шаблона</param>
+        /// <param name="template">шаблон</param>
         /// <param name="fields">список новых полей</param>
-        void AddFields(Guid templateId, List<CreateTemplateFieldDto> fields);
+        void AddFields(TemplateEntity template, List<CreateTemplateFieldDto> fields);
     }
 
 }
